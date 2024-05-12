@@ -2,37 +2,40 @@ import wine from '../../../assets/wine.svg'
 import wineFill from '../../../assets/wine-fill.svg'
 import line from '../../../assets/Line.svg'
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface ListagemCardProps {
-    id?: string;
+    id?: number;
     name?: string;
     artist?: string;
     image?: string;
-    onClick?: () => void;
+    onClick?: (value: boolean) => void;
 }
 
 export default function ListagemCard({ id, name, artist, onClick, image }: ListagemCardProps) {
-    const [isFavorite, setIsFavorite] = useState(false);
-
-    useEffect(() => {
+    const [isFavorite, setIsFavorite] = useState(() => {
         const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        setIsFavorite(favorites.includes(id));
-    }, [id]);
+        return favorites.includes(id);
+    });
 
     const handleClick = () => {
-        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        const updatedFavorites = isFavorite
-            ? favorites.filter((favoriteId: string) => favoriteId !== id)
-            : [...favorites, id];
-        localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-        setIsFavorite(!isFavorite);
-        if (isFavorite) {
-            toast.success('Arte removida dos favoritos');
-        } else {
-            toast.success('Arte adicionada aos favoritos');
-        }
+        setIsFavorite((prevIsFavorite: any) => {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const updatedFavorites = prevIsFavorite
+                ? favorites.filter((favoriteId: number) => favoriteId !== id)
+                : [...favorites, id];
+            localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+            if(onClick){
+                onClick(isFavorite)
+            }
+            if (prevIsFavorite) {
+                toast.success('Arte removida dos favoritos');
+            } else {
+                toast.success('Arte adicionada aos favoritos');
+            }
+            return !prevIsFavorite;
+        });
     };
 
     return (

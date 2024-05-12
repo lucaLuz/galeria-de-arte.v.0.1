@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ListagemCard from '../../components/listagem/listagem-cards';
 import { useQuery } from '@tanstack/react-query';
 import { fetchArtworks } from '../../service/service';
 import { IArtwork } from '../../types/IArtworks';
 import back from '../../assets/back.svg';
-import { Link } from 'react-router-dom';
 import pesquisa from '../../assets/search.svg';
-
+import { Link } from 'react-router-dom';
 
 export default function Favorites() {
     const [favoriteArtworks, setFavoriteArtworks] = useState<any[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [isFavorite, setIsFavorite] = useState<boolean>();
+
     const { data: artworks, isLoading, isError } = useQuery<IArtwork[]>({
         queryKey: ['artworks'],
         queryFn: fetchArtworks,
     });
 
+    const favoriteArtworkDetails = useMemo(() => {
+        return artworks?.filter(artwork =>
+            favoriteArtworks.includes(artwork.id) &&
+            (artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             artwork.artist_title.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+    }, [artworks, favoriteArtworks, searchTerm]);
+    
 
     useEffect(() => {
         const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
         setFavoriteArtworks(favorites);
-    }, []);
-
-    const favoriteArtworkDetails = artworks?.filter(artwork => favoriteArtworks.includes(artwork.id));
+    }, [isFavorite]);
 
     return (
-        <div className='w-full bg-[#0E1008]'>
+        <div className='w-full bg-[#0E1008] min-h-screen'>
             <div className='w-full p-10'>
                 <Link to={"/"} className="w-full flex">
                     <img src={back} alt="" />
@@ -38,7 +46,8 @@ export default function Favorites() {
                         <input
                             placeholder='Search'
                             className='w-[400px] h-10 bg-transparent p-2 text-white outline-none'
-                            value={''}
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <img src={pesquisa} alt="search" />
                     </div>
@@ -52,10 +61,11 @@ export default function Favorites() {
                 {favoriteArtworkDetails && favoriteArtworkDetails.map((artwork) => (
                     <ListagemCard
                         key={artwork.id}
-                        id={artwork.id.toString()}
+                        id={artwork.id}
                         name={artwork.title}
                         artist={artwork.artist_title}
                         image={artwork.imageUrl}
+                        onClick={(e)=> setIsFavorite(e)}
                     />
                 ))}
             </div>

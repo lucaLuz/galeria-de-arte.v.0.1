@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import ListagemCard from './listagem-cards';
-import  pesquisa  from '../../assets/search.svg';
+import pesquisa from '../../assets/search.svg';
 import { Toaster } from 'react-hot-toast';
+import { IArtwork } from '../../types/IArtworks';
 
 interface ListagemProps {
-    artworks: any[];
+    artworks: IArtwork[] | null; 
     isLoading: boolean;
     isError: boolean;
 }
@@ -15,12 +16,17 @@ export default function Listagem({ artworks, isError, isLoading }: ListagemProps
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(event.target.value);
     };
-    const filteredArtworks = artworks ? artworks.filter((artwork) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
-        const titleIncludesSearchText = artwork.title.toLowerCase().includes(lowerCaseSearchText);
-        const artistIncludesSearchText = artwork.artist_title.toLowerCase().includes(lowerCaseSearchText);
-        return titleIncludesSearchText || artistIncludesSearchText;
-    }) : [];
+
+    const filteredArtworks = artworks
+        ? artworks.filter((artwork) => {
+              const lowerCaseSearchText = searchText.toLowerCase();
+              const titleIncludesSearchText =
+                  artwork.title?.toLowerCase().includes(lowerCaseSearchText) || false;
+              const artistIncludesSearchText =
+                  artwork.artist_title?.toLowerCase().includes(lowerCaseSearchText) || false;
+              return titleIncludesSearchText || artistIncludesSearchText;
+          })
+        : [];
 
     return (
         <div className='w-full bg-[#0E1008]'>
@@ -34,7 +40,7 @@ export default function Listagem({ artworks, isError, isLoading }: ListagemProps
                             value={searchText}
                             onChange={handleSearchInputChange}
                         />
-                        <img src={pesquisa} alt="search" />
+                        <img src={pesquisa} alt='search' />
                     </div>
                 </div>
                 <hr />
