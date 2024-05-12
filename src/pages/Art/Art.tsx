@@ -25,7 +25,7 @@ export default function Art() {
       <Link to={"/"} className="w-full flex">
         <img src={back} alt="" />
         <p className="text-white  font-Island-Moments text-4xl ">
-          Voltar
+          Back
         </p>
       </Link>
 
@@ -45,29 +45,29 @@ export default function Art() {
               </div>
             </div>
             <div className='flex gap-8'>
-              <div className="w-full flex flex-col">
-                <div className="text-white text-left font-Island-Moments text-2xl ">
-                  Data: {artwork?.date_display}
+              <div className="w-full flex flex-col gap-2">
+                <div className="text-white text-left font-Reddit-Mono text-base  font-thin">
+                  Date: {artwork?.date_display}
                 </div>
-                <div className="text-white text-left font-Island-Moments text-2xl ">
-                  Artista: {artwork?.artist_title}
+                <div className="text-white text-left font-Reddit-Mono text-base  font-thin">
+                  Artist: {artwork?.artist_title}
                 </div>
-                <div className="text-white text-left font-Island-Moments text-2xl  ">
-                  Local de origem: {artwork?.place_of_origin}
+                <div className="text-white text-left font-Reddit-Mono text-base  font-thin ">
+                  Place: {artwork?.place_of_origin} (Object made in)
                 </div>
-                <div className="text-white text-left font-Island-Moments text-2xl ">
-                  Dimensões: {artwork?.dimensions}
+                <div className="text-white text-left font-Reddit-Mono text-base  font-thin">
+                  Dimensions: {artwork?.dimensions}
                 </div>
               </div>
-              <div className='w-full flex flex-col'>
-                <div className="text-white text-left font-Island-Moments text-2xl ">
-                  Fabricado de: {artwork?.medium_display}
+              <div className='w-full flex flex-col gap-2'>
+                <div className="text-white text-left font-Reddit-Mono text-base  font-thin">
+                  Medium: {artwork?.medium_display}
                 </div>
-                <div className="text-white text-left font-Island-Moments text-2xl  ">
-                  Direito autoral: {artwork?.copyright_notice}
+                <div className="text-white text-left font-Reddit-Mono text-base  font-thin">
+                  Credit Line: {artwork?.credit_line}
                 </div>
-                <div className="text-white text-left font-Island-Moments text-2xl">
-                  Linha de crédito: {artwork?.credit_line}
+                <div className="text-white text-left font-Reddit-Mono text-base  font-thin ">
+                  Copyright: {artwork?.copyright_notice}
                 </div>
               </div>
             </div>
