@@ -14,8 +14,16 @@ export default function Art() {
     return description?.replace(/<\/?p>/g, '');
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isLoading) return <div className='w-full min-h-screen bg-[#0E1008] justify-center items-center'>
+  <p className='font-Island-Moments text-[80px] text-white'>
+      Loading...
+  </p>
+</div>;
+  if (error) return  <div className='w-full min-h-screen bg-[#0E1008] justify-center items-center'>
+  <p className='font-Island-Moments text-[80px] text-white'>
+      Error: {error.message}
+  </p>
+</div>;
   console.log(artwork)
 
   return (

@@ -21,10 +21,10 @@ export default function Favorites() {
         return artworks?.filter(artwork =>
             favoriteArtworks.includes(artwork.id) &&
             (artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-             artwork.artist_title.toLowerCase().includes(searchTerm.toLowerCase()))
+                artwork.artist_title.toLowerCase().includes(searchTerm.toLowerCase()))
         );
     }, [artworks, favoriteArtworks, searchTerm]);
-    
+
 
     useEffect(() => {
         const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
@@ -56,8 +56,18 @@ export default function Favorites() {
             </div>
 
             <div className='w-full mt-5 p-10 flex-wrap flex gap-40 justify-center'>
-                {isLoading && <p>Loading...</p>}
-                {isError && <p>Error</p>}
+                {isLoading && <div className='w-full min-h-screen bg-[#0E1008] justify-center items-center'>
+                    <p className='font-Island-Moments text-[80px] text-white'>
+                        Loading...
+                    </p>
+                </div>}
+                {isError &&
+                    <div className='w-full min-h-screen bg-[#0E1008] justify-center items-center'>
+                        <p className='font-Island-Moments text-[80px] text-white'>
+                            Error
+                        </p>
+                    </div>
+                }
                 {favoriteArtworkDetails && favoriteArtworkDetails.map((artwork) => (
                     <ListagemCard
                         key={artwork.id}
@@ -65,7 +75,7 @@ export default function Favorites() {
                         name={artwork.title}
                         artist={artwork.artist_title}
                         image={artwork.imageUrl}
-                        onClick={(e)=> setIsFavorite(e)}
+                        onClick={(e) => setIsFavorite(e)}
                     />
                 ))}
             </div>
